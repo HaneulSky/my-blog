@@ -1,36 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import ArticleProvider, { useArticle } from "../hooks/useArticle";
+import Article from "./article";
+import Box from "@mui/material/Box";
 
 const Articles = () => {
-  const [articles, setArticles] = useState();
-  const url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=db51281e856f4bd5b2f64ff4ffac0659";
+    const { articles } = useArticle();
+    console.log(articles);
 
-  const result = fetch(url, {
-    method: "GET",
-  });
-
-  useEffect(() => {
-    result
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Ошибка запроса");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setArticles(data.articles);
-      })
-      .catch((error) => {
-        console.error("Ошибка:", error);
-      });
-  }, []);
-
-  console.log(articles);
-
-  return (
-    <>
-      <h2>Статьи</h2> <p>Скоро здесь будут статьи</p>
-    </>
-  );
+    return (
+        <ArticleProvider>
+            <Box
+                sx={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    p: 1,
+                    m: 1,
+                    bgcolor: "background.paper",
+                    justifyContent: "space-around"
+                }}
+            >
+                {" "}
+                {articles
+                    ? articles.map((article) => (
+                          <Article key={article._id} {...article} />
+                      ))
+                    : "Loading..."}
+            </Box>
+        </ArticleProvider>
+    );
 };
 
 export default Articles;
