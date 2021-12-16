@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 
 const NavBar = () => {
     return (
@@ -33,28 +32,15 @@ const NavBar = () => {
                         Об авторе
                     </Link>
                 </Typography>
-                <Button color="inherit">Login</Button>
+                <Link
+                    style={{ color: "inherit", textDecoration: "none" }}
+                    to="/login"
+                >
+                    Войти
+                </Link>
             </Toolbar>
         </AppBar>
     );
 };
 
 export default NavBar;
-
-/*         <ul className="nav">
-            <li className="nav-item">
-                <Link className="nav-link" to="/">
-                    Главная
-                </Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link" to="/articles">
-                    Статьи
-                </Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link" to="/about">
-                    Об авторе
-                </Link>
-            </li>
-        </ul> */

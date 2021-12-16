@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 
 const Articles = () => {
     const { articles } = useArticle();
-    console.log(articles);
 
     return (
         <ArticleProvider>
@@ -22,7 +21,11 @@ const Articles = () => {
                 {" "}
                 {articles
                     ? articles.map((article) => (
-                          <Article key={article._id} {...article} />
+                          <Article
+                              key={article._id}
+                              {...article}
+                              articles={articles}
+                          />
                       ))
                     : "Loading..."}
             </Box>

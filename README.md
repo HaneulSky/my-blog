@@ -1,4 +1,4 @@
-Вы можете посмотреть проект по [ссылке])(https://haneulsky.github.io/my-blog/)
+Вы можете посмотреть проект по [ссылке](https://haneulsky.github.io/my-blog/)
 
 # Getting Started with Create React App
 
