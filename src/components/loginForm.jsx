@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { validator } from "../utils/validator";
+import TextField from "./textField";
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAuthErrors, login } from "../store/user";
 // import { toast } from "react-toastify";
 
 const LoginForm = () => {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const loginError = useSelector(getAuthErrors());
     const [data, setData] = useState({
         email: "",
-        password: "",
-        stayOn: false
+        password: ""
     });
-    const [errors, setErrors] = useState(null);
+    const [errors, setErrors] = useState({});
     const validatorConfig = {
         email: {
             isRequired: {
@@ -40,16 +45,17 @@ const LoginForm = () => {
         return Object.keys(errors).length === 0;
     };
 
-    // const isValid = Object.keys(errors).length === 0;
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const isValid = validate();
         if (!isValid) return;
 
-        console.log(data);
-        console.log(e);
+        const redirect = history.location.state
+            ? history.location.state.from.pathname
+            : "/";
+
+        dispatch(login({ payload: data, redirect }));
     };
 
     const handleChange = (target) => {
@@ -58,6 +64,7 @@ const LoginForm = () => {
             [target.name]: target.value
         }));
     };
+    const isValid = Object.keys(errors).length === 0;
 
     return (
         <Box
@@ -66,7 +73,9 @@ const LoginForm = () => {
                 flexWrap: "wrap",
                 "& > :not(style)": {
                     marginTop: 10,
+                    marginBottom: 5,
                     width: 500,
+                    height: 340,
                     border: 0.5,
                     borderColor: "lightblue",
                     p: 3,
@@ -75,36 +84,36 @@ const LoginForm = () => {
                 justifyContent: "center"
             }}
         >
-            <form onSubmit={handleSubmit}>
+            <form style={{ marginTop: 10 }} onSubmit={handleSubmit}>
                 <TextField
-                    id="standard-basic"
-                    label="Email"
+                    label="электронная почта"
+                    type="text"
+                    name="email"
+                    value={data.email}
+                    onChange={handleChange}
+                    error={errors.email}
                     variant="standard"
                     sx={{ width: 450 }}
-                    onChange={handleChange}
                 />
-                {errors ? <p style={{ color: "red" }}>{errors.email}</p> : null}
                 <TextField
-                    id="standard-basic"
+                    label="Пароль"
                     type="password"
-                    label="Password"
+                    name="password"
+                    value={data.password}
+                    onChange={handleChange}
+                    error={errors.password}
                     variant="standard"
                     sx={{ width: 450 }}
-                    onChange={handleChange}
                 />
-                {errors ? (
-                    <p style={{ color: "red" }}>{errors.password}</p>
-                ) : null}
-
+                {loginError && <p className="text-danger">{loginError}</p>}
                 <Button
                     sx={{ marginTop: 3, width: 200, marginLeft: 18 }}
                     variant="outlined"
                     color="primary"
+                    type="submit"
+                    disabled={!isValid}
                 >
                     Войти
-                </Button>
-                <Button color="primary" sx={{ mt: 2, ml: 18 }}>
-                    Зарегистрироваться
                 </Button>
             </form>
         </Box>

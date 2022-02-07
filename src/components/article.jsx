@@ -56,7 +56,7 @@ const Article = ({ _id, title, content, link, articles }) => {
                         }}
                     >
                         Открыть
-                    </Button>{" "}
+                    </Button>
                 </CardActions>
             </Card>
         );
