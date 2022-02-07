@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { useSelector, useDispatch } from "react-redux";
+import { getCurrentUserData, getIsLoggedIn, loadUser } from "../store/user";
+import { IconButton } from "@mui/material";
 
 const NavBar = () => {
+    const dispatch = useDispatch();
+    const isLoggedIn = useSelector(getIsLoggedIn());
+    const logout = () => {
+        console.log("button for logout");
+    };
+    const currentUser = useSelector(getCurrentUserData());
+    useEffect(() => {
+        dispatch(loadUser());
+    }, []);
+
     return (
         <AppBar position="static">
             <Toolbar>
@@ -33,28 +46,28 @@ const NavBar = () => {
                         Об авторе
                     </Link>
                 </Typography>
-                <Button color="inherit">Login</Button>
+                {isLoggedIn && currentUser ? (
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        sx={{ flexGrow: 1 }}
+                    >
+                        {currentUser.name}
+                        <IconButton aria-label="exit" onClick={logout}>
+                            <ExitToAppIcon />
+                        </IconButton>
+                    </Typography>
+                ) : (
+                    <Link
+                        style={{ color: "inherit", textDecoration: "none" }}
+                        to="/login"
+                    >
+                        Войти
+                    </Link>
+                )}
             </Toolbar>
         </AppBar>
     );
 };
 
 export default NavBar;
-
-/*         <ul className="nav">
-            <li className="nav-item">
-                <Link className="nav-link" to="/">
-                    Главная
-                </Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link" to="/articles">
-                    Статьи
-                </Link>
-            </li>
-            <li className="nav-item">
-                <Link className="nav-link" to="/about">
-                    Об авторе
-                </Link>
-            </li>
-        </ul> */

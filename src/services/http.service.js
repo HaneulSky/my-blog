@@ -1,19 +1,39 @@
 import axios from "axios";
-import configFile from "../config.json";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import configFile from "../config.json";
+import authService from "./auth.service";
+import localStorageService from "./localStorage.service";
 
 const http = axios.create({
     baseURL: configFile.apiEndPoint
 });
-console.log(http.baseURL);
+
+console.log(configFile.apiEndPoint);
 
 http.interceptors.request.use(
-    function (config) {
+    async function (config) {
         if (configFile.isFireBase) {
             const containSlash = /\/$/gi.test(config.url);
             config.url =
                 (containSlash ? config.url.slice(0, -1) : config.url) + ".json";
+
+            const expiresDate = localStorageService.getTokenExpiresDate();
+            const refreshToken = localStorageService.getRefreshToken();
+            if (refreshToken && expiresDate < Date.now()) {
+                const data = await authService.refresh();
+
+                localStorageService.setTokens({
+                    refreshToken: data.refresh_token,
+                    idToken: data.id_token,
+                    localId: data.user_id,
+                    expiresIn: data.expires_in
+                });
+            }
+            const accessToken = localStorageService.getAccessToken();
+            if (accessToken) {
+                config.params = { ...config.params, auth: accessToken };
+            }
         }
         return config;
     },
@@ -21,6 +41,7 @@ http.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
 function transformData(data) {
     return data && !data._id
         ? Object.keys(data).map((key) => ({
@@ -28,7 +49,6 @@ function transformData(data) {
           }))
         : data;
 }
-
 http.interceptors.response.use(
     (res) => {
         if (configFile.isFireBase) {
@@ -53,7 +73,8 @@ const httpService = {
     get: http.get,
     post: http.post,
     put: http.put,
-    delete: http.delete
+    delete: http.delete,
+    patch: http.patch
 };
 
 export default httpService;

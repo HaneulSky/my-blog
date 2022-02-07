@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import articleService from "../services/articles.service";
+import LinearProgress from "@mui/material/LinearProgress";
 import { toast } from "react-toastify";
 
 const ArticleContext = React.createContext();
@@ -13,7 +14,7 @@ const ArticleProvider = ({ children }) => {
     const [articles, setArticles] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setLoading] = useState(true);
-    console.log(articles, isLoading);
+    // console.log(articles, isLoading);
 
     useEffect(() => {
         getArticles();
@@ -43,7 +44,7 @@ const ArticleProvider = ({ children }) => {
 
     return (
         <ArticleContext.Provider value={{ articles }}>
-            {!isLoading ? children : "Loading..."}
+            {!isLoading ? children : <LinearProgress color="success" />}
         </ArticleContext.Provider>
     );
 };
