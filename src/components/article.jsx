@@ -3,20 +3,19 @@ import PropTypes from "prop-types";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, CardActions } from "@mui/material";
+import { CardActionArea, CardActions } from "@mui/material";
 import { blue } from "@mui/material/colors";
-// import { toast } from "react-toastify";
-// import { Link } from "react-router-dom";
-import ArticlePage from "./articlePage";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getArticlesByIds } from "../store/articles";
 
 const backColor = blue[50];
 
-const Article = ({ _id, title, content, link, articles }) => {
-    const cutContent = content ? content.slice(0, 58) + "..." : "Loading...";
-    // const goToArticlePage = () => {
-    //     console.log("id", _id, "title", title);
-    //     return <ArticlePage title={title} link={link} content={content} />;
-    // };
+const Article = ({ _id, title, content, link }) => {
+    const ArticlesById = useSelector(getArticlesByIds(_id));
+    const cutContent = ArticlesById.content
+        ? ArticlesById.content.slice(0, 58) + "..."
+        : "Loading...";
 
     if (content) {
         return (
@@ -30,7 +29,7 @@ const Article = ({ _id, title, content, link, articles }) => {
                 <CardActionArea>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
-                            {title}
+                            {ArticlesById.title}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             {cutContent}
@@ -38,25 +37,13 @@ const Article = ({ _id, title, content, link, articles }) => {
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button
+                    <Link
                         size="small"
                         color="primary"
-                        onClick={() => {
-                            if (!_id) {
-                                console.log("что-то не так");
-                            } else {
-                                return (
-                                    <ArticlePage
-                                        title={title}
-                                        link={link}
-                                        content={content}
-                                    />
-                                );
-                            }
-                        }}
+                        to={`/articles/${ArticlesById._id}`}
                     >
                         Открыть
-                    </Button>
+                    </Link>
                 </CardActions>
             </Card>
         );
@@ -64,11 +51,10 @@ const Article = ({ _id, title, content, link, articles }) => {
 };
 
 Article.propTypes = {
-    _id: PropTypes.number,
+    _id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     title: PropTypes.string,
     content: PropTypes.string,
-    link: PropTypes.string,
-    articles: PropTypes.array
+    link: PropTypes.string
 };
 
 export default Article;

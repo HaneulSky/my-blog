@@ -44,7 +44,11 @@ const ArticleProvider = ({ children }) => {
 
     return (
         <ArticleContext.Provider value={{ articles }}>
-            {!isLoading ? children : <LinearProgress color="success" />}
+            {!isLoading ? (
+                children
+            ) : (
+                <LinearProgress sx={{ mt: 10 }} color="success" />
+            )}
         </ArticleContext.Provider>
     );
 };

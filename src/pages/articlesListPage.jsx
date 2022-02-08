@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Article from "./article";
+import Article from "../components/article";
 import Box from "@mui/material/Box";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -7,6 +7,7 @@ import {
     getArticlesLoadingStatus,
     loadArticlesList
 } from "../store/articles";
+import { LinearProgress } from "@mui/material";
 
 const ArticlesListPage = () => {
     const dispatch = useDispatch();
@@ -18,7 +19,7 @@ const ArticlesListPage = () => {
     }, []);
     console.log(articles);
 
-    if (isLoading) return "Loading";
+    if (isLoading) return <LinearProgress sx={{ mt: 6 }} color="info" />;
 
     return (
         <Box
@@ -31,16 +32,9 @@ const ArticlesListPage = () => {
                 justifyContent: "space-around"
             }}
         >
-            {" "}
-            {articles
-                ? articles.map((article) => (
-                      <Article
-                          key={article._id}
-                          {...article}
-                          articles={articles}
-                      />
-                  ))
-                : "Loading..."}
+            {articles.map((article) => (
+                <Article key={article._id} {...article} />
+            ))}
         </Box>
     );
 };
