@@ -13,6 +13,10 @@ const articleService = {
             payload
         );
         return data;
+    },
+    remove: async (articleId) => {
+        const { data } = await httpService.delete(articleEndPoint + articleId);
+        return data;
     }
 };
 

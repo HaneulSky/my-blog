@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { useSelector, useDispatch } from "react-redux";
 import { getCurrentUserData, getIsLoggedIn, loadUser } from "../store/user";
-import { IconButton } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 
 const NavBar = () => {
     const dispatch = useDispatch();
@@ -38,19 +38,22 @@ const NavBar = () => {
                         Статьи
                     </Link>
                 </Typography>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                {isLoggedIn && (
                     <Link
                         style={{ color: "inherit", textDecoration: "none" }}
-                        to="/about"
+                        to="/addArticle"
                     >
-                        Об авторе
+                        <Button variant="contained" color="info">
+                            Добавить статью
+                        </Button>
                     </Link>
-                </Typography>
+                )}
+
                 {isLoggedIn && currentUser ? (
                     <Typography
                         variant="h6"
                         component="div"
-                        sx={{ flexGrow: 1 }}
+                        sx={{ flexGrow: 1, ml: 6 }}
                     >
                         {currentUser.name}
                         <IconButton aria-label="exit" onClick={logout}>

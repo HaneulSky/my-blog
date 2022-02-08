@@ -150,6 +150,7 @@ function createUser(payload) {
 export const getCurrentUserData = () => (state) => state.user.entities;
 export const getIsLoggedIn = () => (state) => state.user.isLoggedIn;
 export const getDataStatus = () => (state) => state.user.dataLoaded;
+export const getCurrentUserId = () => (state) => state.user.auth.userId;
 
 export const getAuthErrors = () => (state) => state.user.error;
 
