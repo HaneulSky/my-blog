@@ -5,7 +5,6 @@ const schema = new Schema(
         name: {type: String},
         email: {type: String, required: true, unique: true},
         password: {type: String},
-        completeMeetings: Number,
     },
     {
         timestamps: true,
