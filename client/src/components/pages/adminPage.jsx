@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { getCurrentUserData, loadUser, getIsLoggedIn } from "../../store/user";
 import {
     getArticles,
@@ -12,6 +14,7 @@ import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { blue } from "@mui/material/colors";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import EditIcon from "@mui/icons-material/Edit";
 
 const backColor = blue[50];
 
@@ -32,13 +35,11 @@ const AdminPage = () => {
             ? articles.filter((a) => a.userId === currentUser._id)
             : "Loading";
 
-    console.log(userArticles);
-
     const handleRemoveArticle = (id) => {
         dispatch(removeArticle(id));
     };
 
-    if (!isLoading && isLoggedIn) {
+    if (!isLoading && isLoggedIn && articles) {
         return (
             <Grid
                 container
@@ -62,18 +63,42 @@ const AdminPage = () => {
                                 position: "relative"
                             }}
                         >
-                            {article.title}
+                            <Link
+                                style={{
+                                    color: "inherit",
+                                    textDecoration: "none"
+                                }}
+                                to={`/articles/${article._id}`}
+                            >
+                                {" "}
+                                {article.title}
+                            </Link>
                             <IconButton
                                 aria-label="exit"
                                 style={{
                                     position: "absolute",
                                     bottom: 0,
-                                    right: 0
+                                    right: 0,
+                                    color: "inherit"
                                 }}
                                 onClick={() => handleRemoveArticle(article._id)}
                             >
                                 <HighlightOffIcon />
                             </IconButton>
+
+                            <Link
+                                aria-label="exit"
+                                style={{
+                                    position: "absolute",
+                                    bottom: 5,
+                                    right: 35,
+                                    color: "inherit",
+                                    textDecoration: "none"
+                                }}
+                                to={`/articles/${article._id}/edit`}
+                            >
+                                <EditIcon />
+                            </Link>
                         </Typography>
                     </Grid>
                 ))}
@@ -84,8 +109,8 @@ const AdminPage = () => {
     }
 };
 
+AdminPage.propTypes = {
+    articleId: PropTypes.string
+};
+
 export default AdminPage;
-
-// получить статьи отдельного пользователя со всем функционалом - удаление, редактирование
-
-/* articles.find((a)=> a.userId === currentUser._id) */

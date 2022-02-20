@@ -1,26 +1,29 @@
 import React from "react";
 // import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-import ArticlesListPage from "../components/pages/articlesListPage";
+// import ArticlesListPage from "../components/pages/articlesListPage";
 import ArticlePage from "../components/pages/articlePage";
 import EditArticlePage from "../components/pages/editArticlePage";
+import AdminPage from "../components/pages/adminPage";
+import ArticlesLoader from "../components/ui/hoc/articlesLoader";
 
 const Articles = () => {
     const params = useParams();
     const { articleId, edit } = params;
-    console.log(params);
 
     return (
         <>
-            {articleId ? (
-                edit ? (
-                    <EditArticlePage />
+            <ArticlesLoader>
+                {articleId ? (
+                    edit ? (
+                        <EditArticlePage />
+                    ) : (
+                        <ArticlePage articleId={articleId} />
+                    )
                 ) : (
-                    <ArticlePage articleId={articleId} />
-                )
-            ) : (
-                <ArticlesListPage articleId={articleId} />
-            )}
+                    <AdminPage articleId={articleId} />
+                )}
+            </ArticlesLoader>
         </>
     );
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import { getArticlesByIds } from "../../store/articles";
+import { getCurrentUserData } from "../../store/user";
 import { useSelector } from "react-redux";
 import { Box, Typography, LinearProgress, Button } from "@mui/material";
 import PropTypes from "prop-types";
@@ -7,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const ArticlePage = ({ articleId }) => {
     const ArticleById = useSelector(getArticlesByIds(articleId));
-    console.log(articleId, ArticleById);
+    const currentUser = useSelector(getCurrentUserData());
 
     if (ArticleById) {
         return (
@@ -19,9 +20,12 @@ const ArticlePage = ({ articleId }) => {
                     mt: 5
                 }}
             >
-                <Link to={`/articles/${articleId}/edit`}>
-                    <Button variant="contained">Редактировать</Button>
-                </Link>
+                {currentUser._id.toString() ===
+                    ArticleById.userId.toString() && (
+                    <Link to={`/articles/${articleId}/edit`}>
+                        <Button variant="contained">Редактировать</Button>
+                    </Link>
+                )}
                 <Typography
                     sx={{ mt: 3 }}
                     variant="h2"

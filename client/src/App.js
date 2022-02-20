@@ -8,6 +8,9 @@ import AddNewArticleForm from "./components/ui/addNewArticleForm";
 import LogOut from "./layout/logOut";
 import AdminPage from "./components/pages/adminPage";
 import Articles from "./layout/articles";
+import ProtectedRoute from "./components/common/protectedRoute";
+// import ArticlePage from "./components/pages/articlePage";
+// import ArticlesListPage from "./components/pages/articlesListPage";
 
 function App() {
     console.log(window.outerHeight, window.outerWidth);
@@ -15,15 +18,15 @@ function App() {
         <>
             <Header />
             <Switch>
-                <Route
+                {/* <Route path="/articles/" component={ArticlesListPage} /> */}
+                <ProtectedRoute
                     path="/articles/:articleId?/:edit?"
                     component={Articles}
                 />
                 <Route path="/login" component={Login} />
                 <Route path="/addArticle" component={AddNewArticleForm} />
-                <Route path="/:userId" component={AdminPage} />
                 <Route path="/logout" component={LogOut} />
-
+                <ProtectedRoute path="/:userId" component={AdminPage} />
                 <Route path="/404" component={NotFound} />
                 <Route path="/" exact component={Main} />
                 <Redirect to="/404" />

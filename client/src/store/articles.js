@@ -2,6 +2,7 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 import articleService from "../services/articles.service";
 import { nanoid } from "nanoid";
 import { getCurrentUserId } from "./user";
+import history from "../utils/history";
 
 const articlesSlice = createSlice({
     name: "articles",
@@ -85,6 +86,7 @@ export const createNewArticle = (payload) => async (dispatch, getState) => {
             userId: getCurrentUserId()(getState())
         });
         dispatch(articleCreated(content));
+        history.push("/");
     } catch (error) {
         dispatch(createArticleFailed(error.message));
     }
@@ -104,7 +106,7 @@ export const updateArticle = (payload) => async (dispatch) => {
     try {
         const { content } = await articleService.update(payload);
         dispatch(articleUpdateSuccesed(content));
-        history.push(`/articles/${content._id}`);
+        history.push("/");
     } catch (error) {
         dispatch(updateArticleFailed(error.message));
     }

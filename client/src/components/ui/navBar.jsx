@@ -11,13 +11,10 @@ import { Button, IconButton } from "@mui/material";
 const NavBar = () => {
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(getIsLoggedIn());
-    // const logout = () => {
-    //     console.log("button for logout");
-    // };
     const currentUser = useSelector(getCurrentUserData());
     useEffect(() => {
         dispatch(loadUser());
-    }, []);
+    }, [isLoggedIn]);
 
     return (
         <AppBar position="static">
@@ -30,26 +27,37 @@ const NavBar = () => {
                         Главная
                     </Link>
                 </Typography>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    <Link
-                        style={{ color: "inherit", textDecoration: "none" }}
-                        to="/articles"
-                    >
-                        Статьи
-                    </Link>
-                </Typography>
+
                 {isLoggedIn && (
-                    <Link
-                        style={{ color: "inherit", textDecoration: "none" }}
-                        to="/addArticle"
-                    >
-                        <Button variant="contained" color="info">
-                            Добавить статью
-                        </Button>
-                    </Link>
+                    <>
+                        <Typography
+                            variant="h6"
+                            component="div"
+                            sx={{ flexGrow: 1 }}
+                        >
+                            <Link
+                                style={{
+                                    color: "inherit",
+                                    textDecoration: "none"
+                                }}
+                                to={`/${currentUser._id}`}
+                            >
+                                Мои статьи
+                            </Link>
+                        </Typography>
+
+                        <Link
+                            style={{ color: "inherit", textDecoration: "none" }}
+                            to="/addArticle"
+                        >
+                            <Button variant="contained" color="info">
+                                Добавить статью
+                            </Button>
+                        </Link>
+                    </>
                 )}
 
-                {isLoggedIn && currentUser ? (
+                {currentUser ? (
                     <Typography
                         variant="h6"
                         component="div"

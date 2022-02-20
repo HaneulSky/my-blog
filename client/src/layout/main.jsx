@@ -1,4 +1,5 @@
 import React from "react";
+import ArticlesListPage from "../components/pages/articlesListPage";
 const Main = () => {
     return (
         <>
@@ -20,14 +21,7 @@ const Main = () => {
                 еще нет зарегистрируйтесь.
             </p>
             <p>Приятного чтения! :)</p>
-            <p>
-                Заметка для меня(во время разработки): здесь как вариант
-                добавить картинку для поднятия настроения
-            </p>
-            <p>
-                Заметка для меня 2 (во время разработки): Статьи здесь, кажется,
-                не нужны
-            </p>
+            <ArticlesListPage />
         </>
     );
 };

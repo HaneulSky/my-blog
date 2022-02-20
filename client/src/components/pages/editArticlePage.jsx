@@ -144,5 +144,3 @@ const EditArticlePage = () => {
 };
 
 export default EditArticlePage;
-
-// получить конкретную статью и вытащить данные из нее и впихнуть в значения полей
