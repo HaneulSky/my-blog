@@ -1,8 +1,7 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import articleService from "../services/articles.service";
-import { nanoid } from "nanoid";
-import { getCurrentUserId } from "./user";
 import history from "../utils/history";
+import { getCurrentUserId } from "./user";
 
 const articlesSlice = createSlice({
     name: "articles",
@@ -53,26 +52,24 @@ const {
 
 const articleCreateRequested = createAction("articles/articleCreateRequested");
 const createArticleFailed = createAction("articles/createArticleFailed");
-const updateArticleRequested = createAction("users/updateUserRequested");
-const updateArticleFailed = createAction("users/updateUserFailed");
+const updateArticleRequested = createAction("articles/updateArticleRequested");
+const updateArticleFailed = createAction("articles/updateArticleFailed");
+const removeArticleRequested = createAction("articles/removeArticleRequested");
 
-function isOutDated(date) {
-    if (Date.now() - date > 10 * 60 * 1000) {
-        return true;
-    }
-    return false;
-}
+// function isOutDated(date) {
+//     if (Date.now() - date > 10 * 60 * 1000) {
+//         return true;
+//     }
+//     return false;
+// }
 
-export const loadArticlesList = () => async (dispatch, getState) => {
-    const { lastFetch } = getState().articles;
-    if (isOutDated(lastFetch)) {
-        dispatch(articlesRequested());
-        try {
-            const { content } = await articleService.get();
-            dispatch(articlesReceved(content));
-        } catch (error) {
-            dispatch(articlesRequestFiled(error.message));
-        }
+export const loadArticlesList = () => async (dispatch) => {
+    dispatch(articlesRequested());
+    try {
+        const { content } = await articleService.get();
+        dispatch(articlesReceved(content));
+    } catch (error) {
+        dispatch(articlesRequestFiled(error.message));
     }
 };
 
@@ -81,8 +78,6 @@ export const createNewArticle = (payload) => async (dispatch, getState) => {
     try {
         const { content } = await articleService.create({
             ...payload,
-            _id: nanoid(),
-            created_at: Date.now(),
             userId: getCurrentUserId()(getState())
         });
         dispatch(articleCreated(content));
@@ -92,10 +87,11 @@ export const createNewArticle = (payload) => async (dispatch, getState) => {
     }
 };
 
-export const removeArticle = (id) => async (dispatch) => {
+export const removeArticle = (articleId) => async (dispatch) => {
+    dispatch(removeArticleRequested());
     try {
-        await articleService.remove(id);
-        dispatch(articleRemoved(id));
+        await articleService.remove(articleId);
+        dispatch(articleRemoved(articleId));
     } catch (error) {
         dispatch(articlesRequestFiled(error.message));
     }

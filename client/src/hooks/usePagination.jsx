@@ -2,11 +2,7 @@ import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
-import {
-    getArticles,
-    getArticlesLoadingStatus,
-    loadArticlesList
-} from "../store/articles";
+import { getArticles, loadArticlesList } from "../store/articles";
 
 const PaginationContext = React.createContext();
 
@@ -18,13 +14,12 @@ const PaginationProvider = ({ children }) => {
     const articles = useSelector(getArticles());
     const dispatch = useDispatch();
     const pageSize = 4;
-    const isLoading = useSelector(getArticlesLoadingStatus());
 
     useEffect(() => {
         dispatch(loadArticlesList());
     }, []);
 
-    const itemsCount = articles.length;
+    const itemsCount = articles ? articles.length : null;
 
     const pageCount = Math.ceil(itemsCount / pageSize);
     if (pageCount === 1) return null;
@@ -33,7 +28,7 @@ const PaginationProvider = ({ children }) => {
 
     return (
         <PaginationContext.Provider value={{ pages }}>
-            {!isLoading ? children : "Loading"}
+            {children}
         </PaginationContext.Provider>
     );
 };

@@ -4,6 +4,7 @@ import { usePagination } from "../../hooks/usePagination";
 
 const Pagination = ({ onPageChange, currentPage }) => {
     const { pages } = usePagination();
+
     return (
         <nav>
             <ul className="pagination">

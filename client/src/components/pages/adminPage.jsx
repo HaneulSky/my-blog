@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useParams } from "react-router-dom";
 import { getCurrentUserData, loadUser, getIsLoggedIn } from "../../store/user";
 import {
     getArticles,
@@ -19,6 +19,8 @@ import EditIcon from "@mui/icons-material/Edit";
 const backColor = blue[50];
 
 const AdminPage = () => {
+    const params = useParams();
+    const { userId } = params;
     const dispatch = useDispatch();
     const isLoggedIn = useSelector(getIsLoggedIn());
     const currentUser = useSelector(getCurrentUserData());
@@ -28,7 +30,7 @@ const AdminPage = () => {
     useEffect(() => {
         dispatch(loadUser());
         dispatch(loadArticlesList());
-    }, []);
+    }, [isLoggedIn]);
 
     const userArticles =
         articles && isLoggedIn
@@ -38,6 +40,10 @@ const AdminPage = () => {
     const handleRemoveArticle = (id) => {
         dispatch(removeArticle(id));
     };
+
+    if (currentUser && userId !== currentUser._id) {
+        return <Redirect to="/404" />;
+    }
 
     if (!isLoading && isLoggedIn && articles) {
         return (
@@ -70,7 +76,6 @@ const AdminPage = () => {
                                 }}
                                 to={`/articles/${article._id}`}
                             >
-                                {" "}
                                 {article.title}
                             </Link>
                             <IconButton

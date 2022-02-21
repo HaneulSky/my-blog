@@ -11,7 +11,7 @@ import { getArticlesByIds } from "../../store/articles";
 
 const backColor = blue[50];
 
-const Article = ({ _id, title, content, link }) => {
+const Article = ({ _id }) => {
     const ArticlesById = useSelector(getArticlesByIds(_id));
     const cutContent = ArticlesById.content
         ? ArticlesById.content.slice(0, 58) + "..."

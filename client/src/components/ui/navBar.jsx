@@ -28,7 +28,7 @@ const NavBar = () => {
                     </Link>
                 </Typography>
 
-                {isLoggedIn && (
+                {isLoggedIn && currentUser && (
                     <>
                         <Typography
                             variant="h6"

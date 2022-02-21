@@ -9,14 +9,7 @@ import TextAreaField from "../common/textAreaField";
 
 const AddNewArticleForm = () => {
     const dispatch = useDispatch();
-    const [data, setData] = useState({
-        title: "",
-        description: "",
-        content: "",
-        userId: "",
-        link: "",
-        created_at: ""
-    });
+    const [data, setData] = useState({});
     const [errors, setErrors] = useState({});
 
     const handleChange = (target) => {
@@ -57,6 +50,10 @@ const AddNewArticleForm = () => {
         return Object.keys(errors).length === 0;
     };
     const isValid = Object.keys(errors).length === 0;
+    const clearForm = () => {
+        setData({});
+        setErrors({});
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -69,6 +66,7 @@ const AddNewArticleForm = () => {
         };
         dispatch(createNewArticle(newData));
         console.log(newData);
+        clearForm();
     };
     return (
         <>

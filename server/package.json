@@ -2,7 +2,7 @@
     "name": "my-blog-server",
     "version": "1.0.0",
     "description": "",
-    "main": "app.js",
+    "main": "index.js",
     "scripts": {
         "start": "cross-env NODE_ENV=production node app.js",
         "serve": "cross-env NODE_ENV=development nodemon app.js"

@@ -1,7 +1,5 @@
 import React from "react";
-// import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-// import ArticlesListPage from "../components/pages/articlesListPage";
+import { useParams } from "react-router-dom";
 import ArticlePage from "../components/pages/articlePage";
 import EditArticlePage from "../components/pages/editArticlePage";
 import AdminPage from "../components/pages/adminPage";
@@ -9,6 +7,7 @@ import ArticlesLoader from "../components/ui/hoc/articlesLoader";
 
 const Articles = () => {
     const params = useParams();
+    console.log(params);
     const { articleId, edit } = params;
 
     return (

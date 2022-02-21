@@ -1,27 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import ArticlesListPage from "../components/pages/articlesListPage";
+import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
+import { IconButton } from "@mui/material";
+import Information from "../components/common/information";
+
 const Main = () => {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
     return (
         <>
-            <h1
-                style={{
-                    marginTop: 2 + "em",
-                    marginBottom: 1 + "em",
-                    textAlign: "center"
-                }}
-            >
-                Привет, рада видеть Вас в моем блоге!
-            </h1>
-            <p>
-                Для того, чтобы почитать статьи вы можете кликнуть по ссылке Все
-                статьи в меню.
-            </p>
-            <p>
-                Для добавления новой статьи нужно авторизоваться, если аккаунта
-                еще нет зарегистрируйтесь.
-            </p>
-            <p>Приятного чтения! :)</p>
             <ArticlesListPage />
+            <IconButton
+                onClick={handleOpen}
+                sx={{ position: "absolute", right: 30, bottom: 30 }}
+                color="primary"
+            >
+                <BuildOutlinedIcon sx={{ width: 40, height: 40 }} />
+            </IconButton>
+            <Information onClose={handleClose} open={open} />
         </>
     );
 };

@@ -8,10 +8,7 @@ const articleService = {
         return data;
     },
     create: async (payload) => {
-        const { data } = await httpService.put(
-            articleEndPoint + payload._id,
-            payload
-        );
+        const { data } = await httpService.post(articleEndPoint, payload);
         return data;
     },
     remove: async (articleId) => {

@@ -6,7 +6,6 @@ import TextField from "../common/textField";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthErrors, login } from "../../store/user";
-// import { toast } from "react-toastify";
 
 const LoginForm = () => {
     const dispatch = useDispatch();

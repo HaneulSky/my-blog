@@ -7,9 +7,7 @@ const router = express.Router({mergeParams: true});
 
 router.post("/signUp", [
     check("email", "Некорректный email").isEmail(),
-    check("password", "Минимальная длинна пароля 8 символов").isLength({
-        min: 8,
-    }),
+    check("password", "Минимальная длина пароля 8 символов").isLength({min: 8}),
     async (req, res) => {
         try {
             const errors = validationResult(req);
@@ -47,9 +45,9 @@ router.post("/signUp", [
             await tokenService.save(newUser._id, tokens.refreshToken);
 
             res.status(201).send({...tokens, userId: newUser._id});
-        } catch (error) {
+        } catch (e) {
             res.status(500).json({
-                message: "На сервере произошла ошибка. Попробуйте позже.",
+                message: "На сервере произошла ошибка. Попробуйте позже",
             });
         }
     },
@@ -100,7 +98,7 @@ router.post("/signInWithPassword", [
             res.status(200).send({...tokens, userId: existingUser._id});
         } catch (e) {
             res.status(500).json({
-                message: "На сервере произошла ошибка. Попробуйте позже.",
+                message: "На сервере произошла ошибка. Попробуйте позже",
             });
         }
     },
@@ -114,7 +112,6 @@ router.post("/token", async (req, res) => {
     try {
         const {refresh_token: refreshToken} = req.body;
         const data = tokenService.validateRefresh(refreshToken);
-
         const dbToken = await tokenService.findToken(refreshToken);
 
         if (isTokenInvalid(data, dbToken)) {
@@ -122,16 +119,16 @@ router.post("/token", async (req, res) => {
         }
 
         const tokens = await tokenService.generate({
-            id: data._id,
+            _id: data._id,
         });
-
         await tokenService.save(data._id, tokens.refreshToken);
 
         res.status(200).send({...tokens, userId: data._id});
-    } catch (error) {
+    } catch (e) {
         res.status(500).json({
-            message: "На сервере произошла ошибка. Попробуйте позже.",
+            message: "На сервере произошла ошибка. Попробуйте позже",
         });
     }
 });
+
 module.exports = router;

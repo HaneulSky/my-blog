@@ -16,10 +16,11 @@ router
         }
     })
     .post(auth, async (req, res) => {
+        // console.log(req.user);
         try {
             const newArticle = await Article.create({
                 ...req.body,
-                userId: req.user._id,
+                // userId: req.user._id,
             });
 
             res.status(201).send(newArticle);
@@ -32,14 +33,13 @@ router
 
 router
     .route("/:articleId")
-    .delete(auth, async (req, res) => {
+    .patch(async (req, res) => {
         try {
             const {articleId} = req.params;
-            const removedArticle = await Comment.findById(articleId);
 
-            if (removedArticle.userId.toString() === req.user._id) {
-                await removedArticle.remove();
-                return res.send(null);
+            if (articleId) {
+                const updatedArticle = await Article.findByIdAndUpdate(articleId, req.body, {new: true});
+                res.send(updatedArticle);
             } else {
                 res.status(401).json({message: "Unauthorized"});
             }
@@ -49,16 +49,12 @@ router
             });
         }
     })
-    .patch(async (req, res) => {
+    .delete(async (req, res) => {
         try {
             const {articleId} = req.params;
-
-            if (articleId === req.article._id) {
-                const updatedArticle = await Article.findByIdAndUpdate(articleId, req.body, {new: true});
-                res.send(updatedArticle);
-            } else {
-                res.status(401).json({message: "Unauthorized"});
-            }
+            const removedArticle = await Article.findById(articleId);
+            await removedArticle.remove();
+            return res.send(null);
         } catch (e) {
             res.status(500).json({
                 message: "На сервере произошла ошибка. Попробуйте позже.",

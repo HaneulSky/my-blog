@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
+
 import TextField from "../common/textField";
 import Box from "@mui/material/Box";
 import { Button } from "@mui/material";
 import { validator } from "../../utils/validator";
 import { useDispatch } from "react-redux";
 import { signUp } from "../../store/user";
-// import { toast } from "react-toastify";
 
 const RegisterForm = () => {
     const dispatch = useDispatch();

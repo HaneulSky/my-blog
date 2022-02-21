@@ -17,6 +17,7 @@ const schema = new Schema(
         link: {
             type: String,
         },
+        userId: {type: String, required: true},
     },
     {
         timestamps: {createdAt: "created_at"},
